@@ -7,6 +7,7 @@ import django.http
 import django.template.loader
 import django.utils.encoding
 import django.utils.http
+import django.conf
 
 import users.tokens
 
@@ -38,10 +39,6 @@ def activation_email(
             'where_to': where_to,
         },
     )
-    django.core.mail.send_mail(
-        'Activate your account',
-        message,
-        django.conf.settings.EMAIL,
-        [user.email],
-        fail_silently=False,
-    )
+    print("STARTED")
+    django.core.mail.send_mail('Activate your account', message , django.conf.settings.EMAIL_HOST_USER, [user.email])
+    print("FINISHED")

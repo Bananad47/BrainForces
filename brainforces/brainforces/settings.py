@@ -237,10 +237,23 @@ CKEDITOR_CONFIGS = {
         ),
     }
 }
-
-EMAIL = os.getenv('EMAIL')
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
+if os.getenv('USE_REAL_EMAIL'):
+    EMAIL = os.getenv('EMAIL')
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.getenv('EMAIL_HOST')
+    EMAIL_PORT = os.getenv('EMAIL_PORT')
+    if os.getenv('EMAIL_USE_TLS'):
+        EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
+    else:
+        EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL')
+    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+    SERVER_EMAIL = EMAIL_HOST_USER
+    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+else:
+    EMAIL = os.getenv('EMAIL')
+    EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+    EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 
 PASSWORD_RESET_TIMEOUT = 43200
 
